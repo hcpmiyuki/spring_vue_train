@@ -33,15 +33,13 @@ export default {
       results: []
     }
   },
-  methods:{
-    mounted(){
-      axios.get('http://localhost:5000/results')
-      .then((res) => {
-        console.log(res.data)
-        this.results = res.data
-      })
-      .catch()
-    }
+  mounted(){
+    axios.get('http://localhost:5000/results')
+    .then((res) => {
+      console.log(res.data)
+      this.results = res.data
+    })
+    .catch()
   }
 }
 </script>
