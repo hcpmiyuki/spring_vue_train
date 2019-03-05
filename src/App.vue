@@ -4,19 +4,29 @@
     <header>
       <p class = "wf-nicomoji">#のぎまに。</p>
       <a>毎週月曜日更新！乃木坂46の握手会神対応ランキング！(流れる)</a>
-      {{ results }}
+      <p id = "search">推しの順位は？<input type = "text"　size = "15" value = "例:白石麻衣"><input type = "submit" value = "検索"></p>
     </header>
+
     <div class = "rank">
       <p class = "wf-nicomoji">こんしゅうのランキング</p>
-      <div class="prof">
-        <a class = "rank-top">１位  山下美月</a><br>
-        <img src = "images/山下美月.jpg" alt = "山下美月">
+
+      <div v-for = "data in sample_data">
+        <div v-if = "data.rank <= 3">
+          <div class="prof">
+            <a class = "rank-top">{{ data.rank }}位  {{ data.name }}</a><br>
+            <img src = "images/山下美月.jpg" alt = "山下美月">
+          </div>
+        </div>
+        <div v-else>
+          <div class = "prof">
+            <a>{{ data.rank }}位  {{ data.name }}</a><br>
+          </div>
+        </div>
       </div>
-      <div class = "prof ppl">
-        <a>４位  木村みゆき</a><br>
-      </div>
+
       <a>もっとみる▼</a>
     </div>
+
     <footer>
       <a>ページトップへ</a><br>
       <a><small>copyright</small> みゆき</a>
@@ -30,7 +40,19 @@ export default {
   name: 'App',
   data () {
     return {
-      results: []
+      results: [],
+      sample_data: [
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"1"},
+        {name:"山下美月", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"2"},
+        {name:"梅澤美波", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"3"},
+        {name:"白石麻衣", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"4"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"5"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"6"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"7"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"8"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"9"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"10"}
+      ]
     }
   },
   mounted(){
@@ -68,6 +90,10 @@ header .wf-nicomoji {
 
 header p{
   margin: 0px;
+}
+
+header #search{
+  background: rgba(215, 47, 252, 1);
 }
 
 /* ランキングのとこ */
