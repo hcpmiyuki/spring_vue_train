@@ -4,7 +4,10 @@
     <header id = "top">
       <p class = "wf-nicomoji">#のぎまに</p>
       <a>毎週月曜日hoge時更新！乃木坂46の握手会神対応ランキング！(流れる)</a>
-      <p id = "search">推しの順位は？<input type = "text"　size = "15" value = "例:白石麻衣"><input type = "submit" value = "検索"></p>
+      <p id = "search">推しの順位は？
+        <input type = "text"　size = "15" placeholder = "例:白石麻衣">
+        <input type = "submit" value = "検索">
+      </p>
     </header>
 
     <div class = "rank">
@@ -14,8 +17,7 @@
             <!-- 1-3位 -->
             <div class="prof"  v-if = "data.rank <= 3">
               <a class = "rank-top">{{ data.rank }}位  {{ data.name }}</a><br>
-              <!-- <img :src = "require('assets/images/' + data.name + '.jpg')" :alt = "data.name"> -->
-              <img src = "assets/images/秋元真夏.jpg" :alt = "data.name">
+              <img :src = "require('./assets/images/' + data.name + '.jpg')" :alt = "data.name">
             </div>
             <!-- 4位以下 -->
             <div class = "prof" v-else>
@@ -42,16 +44,16 @@ export default {
     return {
       results: [],
       sample_data: [
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"1"},
-        {name:"山下美月", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"2"},
-        {name:"梅澤美波", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"3"},
-        {name:"白石麻衣", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"4"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"5"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"6"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"7"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"8"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"9"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", date:"2019-3-5", rank:"10"}
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"1"},
+        {name:"山下美月", score:"2.4", tweet:"可愛い", rank:"2"},
+        {name:"梅澤美波", score:"2.4", tweet:"可愛い", rank:"3"},
+        {name:"白石麻衣", score:"2.4", tweet:"可愛い", rank:"4"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"5"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"6"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"7"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"8"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"9"},
+        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"10"}
       ]
     }
   },
@@ -66,7 +68,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 /* スマホ */
 @media screen and (min-width:0px){
   /*  全体　*/
@@ -75,7 +77,11 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     width: auto;
+  }
+
+  *{
     margin: 0px;
+    padding: 0px;
   }
 
   a{
@@ -83,18 +89,20 @@ export default {
   }
 
   /* ヘッダー */
-  header .wf-nicomoji {
-    font-family: "Nico Moji";
-    font-size: 75px;
-    color: rgba(215, 47, 252, 1);
-  }
+  header{
+    .wf-nicomoji{
+      font-family: "Nico Moji";
+      font-size: 75px;
+      color: rgba(215, 47, 252, 1);
+    }
 
-  header p{
-    margin: 0px;
-  }
+    p{
+      margin: 0px;
+    }
 
-  header #search{
-    background: rgba(215, 47, 252, 1);
+    #search{
+      background: rgba(215, 47, 252, 1);
+    }
   }
 
   /* ランキングのとこ */
@@ -103,41 +111,45 @@ export default {
     margin: 30px auto;
     border-radius: 10px;
     border: 1px solid rgba(215, 47, 252, 1);
+
+    a{
+      position: relative;
+      padding: 0 20px;
+      margin: 10px;
+
+      &:after{
+        content: "";
+        display: block;
+        height: 2px;
+        background: -webkit-linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
+        background: linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
+      }
+    }
+
+    .wf-nicomoji{
+      font-family: "Nico Moji";
+      font-size: 33px;
+      background-color: rgba(215, 47, 252, 1);
+      border-top-left-radius: 9px;
+      border-top-right-radius: 9px;
+      color: rgba(255, 255, 255, 1);
+      margin: 0;
+      padding: 5px;
+    }
+
+    img{
+      width: 40%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    // 文字のシマシマ
+    .ppl{
+      background-color: rgba(215, 47, 252, 0.1);
+    }
+
   }
 
-  .rank a {
-    position: relative;
-    padding: 0 20px;
-    margin: 10px;
-  }
-  .rank a:after {
-    content: "";
-    display: block;
-    height: 2px;
-    background: -webkit-linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
-    background: linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
-  }
-
-  .rank .wf-nicomoji{
-    font-family: "Nico Moji";
-    font-size: 33px;
-    background-color: rgba(215, 47, 252, 1);
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    color: rgba(255, 255, 255, 1);
-    margin: 0;
-    padding: 5px;
-  }
-
-  .rank .prof img{
-    width: 50%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-
-  .ppl{
-    background-color: rgba(215, 47, 252, 0.1);
-  }
 
   /* フッター */
   footer{
@@ -148,7 +160,7 @@ export default {
 }
 
 /* PC */
-@media screen and (min-width:480px){
+@media screen and (min-width:481px){
   /*  全体　*/
   .rank{
     width: 90%;
@@ -156,18 +168,21 @@ export default {
     border-radius: 10px;
     border: 1px solid rgba(215, 47, 252, 1);
     width: 50%;
-  }
 
-  .rank a {
-    position: relative;
-    padding: 0 20px;
-    margin: 10px;
-    font-size: 20px;
+    a{
+      position: relative;
+      padding: 0 20px;
+      margin: 10px;
+      font-size: 20px;
+    }
+
+    img{
+      width: 20%;
+      height: auto;
+      margin-bottom: 10px;
+    }
   }
 
 }
-
-
-
 
 </style>
