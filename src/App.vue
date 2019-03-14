@@ -12,21 +12,26 @@
 
     <div class = "rank">
       <p class = "wf-nicomoji">こんしゅうのランキング</p>
-      <div v-for = "data in sample_data">
-        <div :class = "{ppl:data.rank%2 == 0}">
+      <div v-for = "member in results">
+        <div :class = "{ppl:member.rank%2 == 0}">
             <!-- 1-3位 -->
-            <div class="prof"  v-if = "data.rank <= 3">
-              <a class = "rank-top">{{ data.rank }}位  {{ data.name }}</a><br>
-              <img :src = "require('./assets/images/' + data.name + '.jpg')" :alt = "data.name">
+            <div class="prof"  v-if = "member.rank <= 3">
+              <a class = "rank-top">{{ member.rank }}位  {{ member.name }}</a><br>
+              <img :src = "require('./assets/images/' + member.name + '.jpg')" :alt = "member.name">
             </div>
-            <!-- 4位以下 -->
-            <div class = "prof" v-else>
-              <a>{{ data.rank }}位  {{ data.name }}</a><br>
+            <!-- 4-10位 -->
+            <div class = "prof" v-if="member.rank >= 4 && member.rank <= 10">
+              <a>{{ member.rank }}位  {{ member.name }}</a><br>
+            </div>
+
+            <div class = "prof" v-else :class="{hide_rank:hide}">
+              <a>{{ member.rank }}位  {{ member.name }}</a><br>
             </div>
           </div>
       </div>
 
-      <a>もっとみる▼</a>
+      <a @click = "hideRank()" :class="{hide_rank:!hide}">もっとみる▼</a>
+      <a @click = "showRank()" :class="{hide_rank:hide}">とじる▲</a>
     </div>
 
     <footer>
@@ -42,26 +47,33 @@ export default {
   name: 'App',
   data () {
     return {
-      results: [],
-      sample_data: [
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"1"},
-        {name:"山下美月", score:"2.4", tweet:"可愛い", rank:"2"},
-        {name:"梅澤美波", score:"2.4", tweet:"可愛い", rank:"3"},
-        {name:"白石麻衣", score:"2.4", tweet:"可愛い", rank:"4"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"5"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"6"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"7"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"8"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"9"},
-        {name:"秋元真夏", score:"2.4", tweet:"可愛い", rank:"10"}
-      ]
+      results: null,
+      hide: true
     }
+  },
+  methods:{
+    hideRank: function(){
+      if(this.hide){
+        this.hide = false
+      }else{
+        thid.hide = true
+      }
+    },
+    showRank: function(){
+      if(!this.hide){
+        this.hide = true
+      }else{
+        this.hide = false
+      }
+    }
+
   },
   mounted(){
     axios.get('http://localhost:5000/results')
     .then((res) => {
       console.log(res.data)
       this.results = res.data
+      console.log(this.results[2])
     })
     .catch()
   }
@@ -69,6 +81,8 @@ export default {
 </script>
 
 <style lang="scss">
+$main-color: #b43ae2;
+$sub-color: rgb(255, 255, 255);
 /* スマホ */
 @media screen and (min-width:0px){
   /*  全体　*/
@@ -93,7 +107,7 @@ export default {
     .wf-nicomoji{
       font-family: "Nico Moji";
       font-size: 75px;
-      color: rgba(215, 47, 252, 1);
+      color: $main-color;
     }
 
     p{
@@ -101,7 +115,7 @@ export default {
     }
 
     #search{
-      background: rgba(215, 47, 252, 1);
+      background: $main-color;
     }
   }
 
@@ -110,7 +124,7 @@ export default {
     width: 90%;
     margin: 30px auto;
     border-radius: 10px;
-    border: 1px solid rgba(215, 47, 252, 1);
+    border: 1px $main-color;
 
     a{
       position: relative;
@@ -121,18 +135,18 @@ export default {
         content: "";
         display: block;
         height: 2px;
-        background: -webkit-linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
-        background: linear-gradient(to right, rgba(246, 203, 255,1), rgba(215, 47, 252, 1));
+        background: -webkit-linear-gradient(to right, rgba(246, 203, 255,1), $main-color);
+        background: linear-gradient(to right, rgba(246, 203, 255,1), $main-color);
       }
     }
 
     .wf-nicomoji{
       font-family: "Nico Moji";
       font-size: 33px;
-      background-color: rgba(215, 47, 252, 1);
+      background-color: $main-color;
       border-top-left-radius: 9px;
       border-top-right-radius: 9px;
-      color: rgba(255, 255, 255, 1);
+      color: $sub-color;
       margin: 0;
       padding: 5px;
     }
@@ -148,13 +162,17 @@ export default {
       background-color: rgba(215, 47, 252, 0.1);
     }
 
+    .hide_rank{
+      display: none;
+    }
+
   }
 
 
   /* フッター */
   footer{
     height: 50px;
-    background-color: rgba(215, 47, 252, 1);
+    background-color: $main-color;
     bottom: 0;
   }
 }
@@ -166,7 +184,7 @@ export default {
     width: 90%;
     margin: 30px auto;
     border-radius: 10px;
-    border: 1px solid rgba(215, 47, 252, 1);
+    border: 1px solid $main-color;
     width: 50%;
 
     a{
