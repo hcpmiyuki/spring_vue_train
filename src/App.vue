@@ -5,8 +5,8 @@
       <p class = "wf-nicomoji">#のぎまに</p>
       <a>毎週月曜日hoge時更新！乃木坂46の握手会神対応ランキング！(流れる)</a>
       <p id = "search">推しの順位は？
-        <input type = "text"　size = "15" placeholder = "例:白石麻衣">
-        <input type = "submit" value = "検索">
+        <input type = "text"　size = "15" placeholder = "例:白石麻衣" v-model = "search_name">
+        <a class = "point" @click="Search()">検索</a>
       </p>
     </header>
 
@@ -16,24 +16,34 @@
         <div :class = "{ppl:member.rank%2 == 0}">
             <!-- 1-3位 -->
             <div class="prof"  v-if = "member.rank <= 3">
-              <a class = "rank-top">{{ member.rank }}位  {{ member.name }}</a><br>
+              <a class = "rank-top point" @click="showMember(member.name)">{{ member.rank }}位  {{ member.name }}</a><br>
               <img :src = "require('./assets/images/' + member.name + '.jpg')" :alt = "member.name">
             </div>
             <!-- 4-10位 -->
             <div class = "prof" v-if="member.rank >= 4 && member.rank <= 10">
-              <a>{{ member.rank }}位  {{ member.name }}</a><br>
+              <a class = "point" @click="showMember(member.name)">{{ member.rank }}位  {{ member.name }}</a><br>
             </div>
 
             <div class = "prof" v-else :class="{hide_rank:hide}">
-              <a>{{ member.rank }}位  {{ member.name }}</a><br>
+              <a class = "point" @click="showMember(member.name)">{{ member.rank }}位  {{ member.name }}</a><br>
             </div>
           </div>
       </div>
 
-      <a @click = "hideRank()" :class="{hide_rank:!hide}">もっとみる▼</a>
-      <a @click = "showRank()" :class="{hide_rank:hide}">とじる▲</a>
+      <a @click = "hideRank()" :class="{hide_rank:!hide}" class = "point">もっとみる▼</a>
+      <a @click = "showRank()" :class="{hide_rank:hide}" class = "point">とじる▲</a>
     </div>
-
+    <!-- <SearchModal></SearchModal> -->
+    <div class = "rank" v-if = "searched_member != null">
+      <p>{{searched_member[0].rank}}位
+        <span v-if = "searched_member[0].rank < searched_member[1].rank">⤵️</span>
+        <span v-if = "searched_member[0].rank > searched_member[1].rank">⬆️</span>
+        <span v-if = "searched_member[0].rank == searched_member[1].rank">＝</span>
+        {{searched_member[0].name}}</p>
+      <img :src = "require('./assets/images/' + searched_member[0].name + '.jpg')" :alt = "searched_member[0].name"><br>
+      <p>先週の順位：{{ searched_member[1].rank }}位</p><br>
+      <p>今週の神対応：{{ searched_member[0].tweet }}</p><br>
+    </div>
     <footer>
       <a href = "#top">ページトップへ</a><br>
       <a><small>copyright</small> みゆき</a>
@@ -43,12 +53,19 @@
 
 <script>
 import axios from 'axios'
+import SearchModal from './components/SearchModal'
 export default {
+  components: {
+    SearchModal
+  },
   name: 'App',
   data () {
     return {
       results: null,
-      hide: true
+      hide: true,
+      search_name: null,
+      searched_member: null,
+      error_msg: null
     }
   },
   methods:{
@@ -64,6 +81,26 @@ export default {
         this.hide = true
       }else{
         this.hide = false
+      }
+    },
+    Search: function(){
+      if(this.search_name != null){
+        axios.get('http://localhost:5000/show/'+ this.search_name )
+        .then((res) => {
+          console.log(res.data)
+          this.searched_member = res.data
+        })
+        .catch()
+      }
+    },
+    showMember: function(name){
+      if(name != null){
+        axios.get('http://localhost:5000/show/'+ name )
+        .then((res) => {
+          console.log(res.data)
+          this.searched_member = res.data
+        })
+        .catch()
       }
     }
 
@@ -83,6 +120,7 @@ export default {
 <style lang="scss">
 $main-color: #b43ae2;
 $sub-color: rgb(255, 255, 255);
+$point-color: rgba(215, 47, 252, 0.1);
 /* スマホ */
 @media screen and (min-width:0px){
   /*  全体　*/
@@ -91,6 +129,10 @@ $sub-color: rgb(255, 255, 255);
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     width: auto;
+  }
+
+  .point{
+    cursor: pointer;
   }
 
   *{
@@ -159,7 +201,7 @@ $sub-color: rgb(255, 255, 255);
 
     // 文字のシマシマ
     .ppl{
-      background-color: rgba(215, 47, 252, 0.1);
+      background-color: $point-color;
     }
 
     .hide_rank{
@@ -175,6 +217,11 @@ $sub-color: rgb(255, 255, 255);
     background-color: $main-color;
     bottom: 0;
   }
+
+  // モーダru
+
+
+
 }
 
 /* PC */
