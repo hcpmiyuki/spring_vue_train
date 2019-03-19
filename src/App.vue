@@ -10,9 +10,8 @@
       <p id = "search">推しの順位は？
         <input type = "text"　size = "15" placeholder = "例:白石麻衣" v-model = "search_name">
         <a id = "search_btn" class = "point" @click="Search()">検索</a>
-        <p v-if = "error_type[0] != null">{{ error_msg[0]}}</p>
-        <p v-if = "error_type[1] != null">{{ error_msg[1]}}</p>
-        <p v-if = "error_type[2] != null">{{ error_msg[2]}}</p>
+        <p :class = "{validation:validation1}">名前が入力されていません</p>
+        <p :class = "{validation:validation2}">名前が正しく入力されていません</p>
       </p>
     </header>
 
@@ -83,8 +82,8 @@ export default {
       hide: true,
       search_name: null,
       searched_member: null,
-      error_type: [null, null, null],
-      error_msg: ['正しい名前で入力してください', '名前が入力されていません', '名前と苗字の間にスペースを開けないでください']
+      validation1: true,
+      validation2: true
     }
   },
   methods:{
@@ -103,17 +102,25 @@ export default {
       }
     },
     Search: function(){
-      if(this.search_name != null){
+      if(this.search_name){
         axios.get('http://localhost:5000/show/'+ this.search_name )
         .then((res) => {
           console.log(res.data)
           this.searched_member = res.data
+          if(!this.searched_member){
+            this.validation2 = false
+          }else{
+            this.validation1 = true
+            this.validation2 = true
+          }
         })
         .catch()
+      }else{
+        this.validation1 = false
       }
     },
     showMember: function(name){
-      if(name != null){
+      if(name){
         axios.get('http://localhost:5000/show/'+ name )
         .then((res) => {
           console.log(res.data)
@@ -124,6 +131,7 @@ export default {
     },
     hideModal: function(){
       this.searched_member = null
+      this.search_name = null
     }
 
   },
@@ -151,6 +159,10 @@ $point-color: rgba(246, 203, 255,1);
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     width: auto;
+  }
+
+  .validation{
+    display: none;
   }
 
   .fa-crown{
