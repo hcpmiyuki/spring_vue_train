@@ -22,3 +22,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 # spring_vue_train
 ##  春休みの宿題フロント
 + vuecliとaxiosで簡単にapiと通信できそうだったので使ってみました
++ シングルページなのでApp.vueを編集しています
