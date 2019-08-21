@@ -16,7 +16,7 @@
     </header>
 
     <div class = "rank">
-      <p class = "wf-nicomoji">こんしゅうのランキング</p>
+      <p class = "wf-nicomoji">ランキング</p>
       <div v-for = "member in results">
         <div :class = "{ppl:member.rank%2 == 0}">
             <!-- 1-3位 -->
