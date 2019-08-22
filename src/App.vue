@@ -6,7 +6,7 @@
     <div :class = "{wrapper:searched_member != null}">
     <header id = "top">
       <p class = "wf-nicomoji">#のぎまに</p>
-      <a>毎週月曜日8時更新！乃木坂46の握手会神対応ランキング！</a>
+      <a>ツイッターを元に算出！！乃木坂46の握手会神対応ランキング！</a>
       <p id = "search">推しの順位は？
         <input type = "text"　size = "15" placeholder = "例:白石麻衣" v-model = "search_name">
         <a id = "search_btn" class = "point" @click="Search()">検索</a>
@@ -103,7 +103,7 @@ export default {
     },
     Search: function(){
       if(this.search_name){
-        axios.get('http://localhost:5000/show/'+ this.search_name )
+        axios.get('https://nogimani-server.herokuapp.com/show/'+ this.search_name )
         .then((res) => {
           console.log(res.data)
           this.searched_member = res.data
@@ -121,7 +121,7 @@ export default {
     },
     showMember: function(name){
       if(name){
-        axios.get('http://localhost:5000/show/'+ name )
+        axios.get('https://nogimani-server.herokuapp.com/show/'+ name )
         .then((res) => {
           console.log(res.data)
           this.searched_member = res.data
@@ -136,7 +136,7 @@ export default {
 
   },
   mounted(){
-    axios.get('http://localhost:5000/results')
+    axios.get('https://nogimani-server.herokuapp.com/results')
     .then((res) => {
       console.log(res.data)
       this.results = res.data
